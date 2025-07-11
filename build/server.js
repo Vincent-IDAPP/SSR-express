@@ -48214,22 +48214,13 @@ app.get("/", async (req, res) => {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/todos?_limit=10"
       );
-      const todos = response.ok ? await response.json() : [];
+      if (!response.ok) {
+        throw new Error("error");
+      }
+      const todos = await response.json();
       const appHtml = (0, import_server2.renderToStaticMarkup)(
-        /* @__PURE__ */ import_react2.default.createElement(App, { todos: Array.isArray(todos) ? todos : [] })
+        /* @__PURE__ */ import_react2.default.createElement(App, { todos })
       );
-      const html = `
-      <!DOCTYPE html>
-      <html lang="fr">
-        <head>
-          <meta charset="UTF-8" />
-          <title>SSR TODO</title>
-        </head>
-        <body>
-          <div id="root">${appHtml}</div>
-        </body>
-      </html>
-    `;
       return res.send(
         data.replace(
           '<div id="root"></div>',
@@ -48237,6 +48228,7 @@ app.get("/", async (req, res) => {
         )
       );
     } catch (error) {
+      return res.send(error);
     }
   });
 });
