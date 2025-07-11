@@ -1,15 +1,13 @@
-import React from 'react';
-import './App.css'
+import React from "react";
 
-// src/App.jsx
-export default function App({ todos }) {
+export default function App({ todos = [] }) {
   return (
     <div>
       <h1>Liste des tâches</h1>
       <ul>
-        {todos.map(todo => (
+        {todos.map((todo) => (
           <li key={todo.id}>
-            {todo.title} {todo.completed ? "✅" : "❌"}
+            {todo.title} {todo.completed ? "(Terminé)" : "(À faire)"}
           </li>
         ))}
       </ul>
